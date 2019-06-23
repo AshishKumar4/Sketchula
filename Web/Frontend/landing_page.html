@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sketchula-Your Online Design Master</title>
+
+	<script
+  src="http://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Code+Pro:700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="landing.css">
+
+    <!--Javascript-->
+
+
+
+
+
+    
+
+  <!--Drawing Pad-->
+  <script type="text/javascript" src="landing.js">
+  </script>
+
+</head>
+<body onload="init()">
+	
+	
+
+<!--Basic Jumbotron-->
+  <div class="jumbotron">
+  <h1><center>Sketchula</center></h1>
+  <h2><center>Your Online Design Master</center></h2>
+  <div></div>
+  <p><center><a class="btn btn-info btn-lg" href="#" role="button">Make my Sketch</a></center></p>
+</div>
+
+
+
+<!--Basic Navbar-->
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Sketchula</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="login.html">Login <span class="sr-only">(current)</span></a></li>
+        <li><a href="signup.html">Signup</a></li>
+        <li><a href="#">Pick your product</a></li>
+        <li><a href="#">Upload your sketch</a></li>
+        <li><a href="#">Transfer my Style</a></li>
+        
+        
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">My Gallery</a></li>
+        
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<!--Images-->
+
+<img src="https://images.unsplash.com/photo-1523779105320-d1cd346ff52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80">
+<img src="https://cdn.pixabay.com/photo/2017/07/02/19/24/dumbbells-2465478__340.jpg">
+<img src="https://images.unsplash.com/photo-1524498250077-390f9e378fc0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80">
+
+
+
+ <!--Login form
+    <div id="container_demo" >
+	hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  
+	<a class="hiddenanchor" id="toregister"></a>
+	<a class="hiddenanchor" id="tologin"></a>
+	<div id="wrapper">
+		<div id="login" class="animate form">
+			<form  action="mysuperscript.php" autocomplete="on"> 
+				<h1><center>Log in</center></h1> 
+				<p> 
+					<label for="username" class="uname" data-icon="u" > Your email or username </label>
+					<input id="username" name="username" required="required" type="text" placeholder="myusername or mymail@mail.com"/>
+					<br>
+				</p>
+				<p> 
+					<label for="password" class="youpasswd" data-icon="p"> Your password </label>
+					<input id="password" name="password" required="required" type="password" placeholder="eg. X8df!90EO" /> 
+					<br>
+				</p>
+				<p class="keeplogin"> 
+					<input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" /> 
+					<label for="loginkeeping">Keep me logged in</label>
+				</p>
+				<p class="login button"> 
+					<input type="submit" value="Login" /> 
+				</p>
+				<br><br>
+				<p class="change_link">
+					Not a member yet ?
+					<a href="#register" class="to_register">Join us</a>
+				</p>
+			</form>
+		</div>
+		<br><br><br>
+
+		<div id="register" class="animate form">
+			<form  action="mysuperscript.php" autocomplete="on"> 
+				<h1> Sign up </h1> 
+				<p> 
+					<label for="usernamesignup" class="uname" data-icon="u">Your username</label>
+					<input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="mysuperusername690" />
+				</p>
+				<p> 
+					<label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
+					<input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="mysupermail@mail.com"/> 
+				</p>
+				<p> 
+					<label for="passwordsignup" class="youpasswd" data-icon="p">Your password </label>
+					<input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="eg. X8df!90EO"/>
+				</p>
+				<p> 
+					<label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Please confirm your password </label>
+					<input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="eg. X8df!90EO"/>
+				</p>
+				<p class="signin button"> 
+					<input type="submit" value="Sign up"/> 
+				</p>
+				<p class="change_link">  
+					Already a member ?
+					<a href="#tologin" class="to_register"> Go and log in </a>
+				</p>
+			</form>
+		</div>
+		
+	</div>
+</div> -->
+
+<!--SketchPad-->
+<canvas id="sketchpad" width="400" height="300"></canvas>
+
+ <div id="sketchpadapp">
+        <div class="leftside">
+             
+             <p id="instruction">Draw something by holding down the mouse button or using single clicks.</p>
+             <br/>
+
+             <input class="sub_button" type="submit" value="Clear Sketchpad" onclick="clearCanvas(canvas,ctx);">
+        </div>
+        <!--<div class="rightside">
+            <canvas id="sketchpad" height="300" width="400">
+            </canvas>
+        </div>-->
+    </div>
+
+</body>
+</html>
