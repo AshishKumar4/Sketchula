@@ -1,0 +1,10 @@
+requests
+numpy
+Flask_Sessionstore
+pymongo
+Werkzeug==0.14.1
+Flask==1.0.2
+Algorithmia==1.1.4
+uwsgi
+nltk
+flask_mail

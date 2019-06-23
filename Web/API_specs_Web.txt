@@ -1,0 +1,64 @@
+API Specifications for the Web Service
+
+Types of models ->
+    1. Vanilla: Non Trainable, loaded by default on start 
+    2. Global: Trainable by any user, loaded by default on start 
+    3. Private: Available to user who created it. Trainable by creator, Loaded on request in memory
+
+
+GET/POST Methods supported as well as Data through JSON and Normal Form data supported.
+
+INPUT FORMAT: JSON/JSON-like/FORMDATA/GET 
+OUTPUT FORMAT: JSON 
+
+Stateless Actions ->
+    1. Inference: 
+        URL: http://<ip>:80/inferAPI/universal
+        INPUT Arguments:    text        (text to be classified)
+                            apikey      (API Key assigned to/by the user)
+                            user        (username/userid through which they log in)
+        OUTPUT:     <List type>         {"Negative", "Red", <callid>}
+                                        {"Positive", "Green", <callid>}
+
+    2. feedback: Used for training on single wrongly classified samples
+        URL: http://<ip>:80/inferAPI/feedback 
+        INPUT Arguments:    callid      (callid variable returned while making inference call)
+                            apikey      (Api Key assigned to/by the user)
+                            user        (username/userid through which they log in)
+                            feedback    ('wrong' if wrong, 'correct' if right)
+        OUTPUT:     {"Done"} if success
+
+    3. Train on a dataset file:
+        URL: http://<ip>:80/inferAPI/train 
+        INPUT Arguments:    data        (JSON document with tupples of (text, label) on each line)
+        OUTPUT:     {"Done..."} if success 
+
+    4. Save a model to physical memory:
+        URL: http://<ip>:80/inferAPI/save 
+        INPUT Arguments:        apikey      (API Key assigned to/by the user)
+                                user        (username/userid through which they log in)
+        OUTPUT:     {"Saved"} if success 
+    
+    5. Load a model to physical memory:
+        URL: http://<ip>:80/inferAPI/load 
+        INPUT Arguments:        apikey      (API Key assigned to/by the user)
+                                user        (username/userid through which they log in)
+        OUTPUT:     {"Saved"} if success 
+
+    6. Create a Model on the physical memory (Uses a template model):
+        URL: http://<ip>:80/inferAPI/create 
+        INPUT Arguments:        templatekey     (Original Key of which the duplicate is to be made)
+                                originaluser    (username of the owner of the templatekey)
+                                newkey          (New API Key name, 'none' if want to be generated automatically)
+                                newuser         (Username of the new user of the new Key)
+
+
+        OUTPUT:     {"Created"} if success 
+
+When a user registers successfully, <username>_vanilla and <username>_global API Keys 
+are created automatically, linking to vanilla and global models.
+
+Users can share models amongst each other by simply sending appropriate request to 
+/inferAPI/create, as state above
+
+OTP Verification has been temporarily lifted, Just put anything in the OTP field to verify

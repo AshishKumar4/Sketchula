@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Success</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        html {
+            color: #888;
+            display: table;
+            font-family: sans-serif;
+            height: 100%;
+            text-align: center;
+            width: 100%;
+        }
+
+        body {
+            display: table-cell;
+            margin: 2em auto;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2em;
+            font-weight: 400;
+        }
+
+        p {
+            margin: 0 auto;
+            width: 280px;
+        }
+
+        @media only screen and (max-width: 280px) {
+
+            body,
+            p {
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin: 0 0 0.3em;
+            }
+
+        }
+        #grad {
+            background-size: 100%;
+            background-color: black; /* For browsers that do not support gradients */
+            background-image: linear-gradient(black, darkred); /* Standard syntax (must be last) */
+            right: 0;
+            bottom: 0;
+            top: 0;
+            left: 0;
+            position: absolute;
+        }
+        #text{
+            padding-top: 280px;
+            margin: 0 auto;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+	<div style="z-index:-1;background:url({{ url_for('static', filename='img/back.png') }});background-size: 100%;position:fixed; height:100vh; width:100vw"></div>
+	<div id="grad1">
+    <div id="text">
+        <h1>Successfully Registered</h1><br>
+        <p>Click <a href="/login">Here</a> to Log in...</p>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+API Specifications for ML Engine
+
+Types of models ->
+    1. Vanilla: Non Trainable, loaded by default on start 
+    2. Global: Trainable by any user, loaded by default on start 
+    3. Private: Available to user who created it. Trainable by creator, Loaded on request in memory
+
+All actions on JSON documents, 
+ONLY POST HTTP Method supported, 
+Python Pseudo code provided
+
+INPUT FORMAT: JSON
+OUTPUT FORMAT: JSON
+Actions possible -> 
+    1. Inference: Provided text, infers and returns sentiment =>
+        i) universalInference: Infer through all engines:
+            URL: http://<ip>:5000/infer/universal
+            POST data: {'text':"Hello World", 'model_id':'abcd', 'model_type':'abcd', 'user':'abcd}
+
+            Example Code =>
+
+            import requests as re 
+            import json
+            postdata = {'text':"Hello World", 'model_id':'testing', 'model_type':'private', 'user':'ad,om}
+            result = re.post("http://localhost:5000/infer/universal", data=json.dumps(postdata))
+            print(result.text)
+            # OUTPUT: {'Positive','Green'}
+        
+    2. Incremental Learning: Incremental Learning refers to training the model by sending feedback wether
+            the input is correct or not. Not available for private
+        i) Universal Online Trainer: Trains both private and global models 
+            URL: http://<ip>:5000/feedback/private
+            POST data: {'text':"Hello World", 'label':'Negative', 'model_id':'testing'}
+            # We need to provide corrected label as label above. 
+            # For Global models, just put model_id = global above 
+            Example Code =>
+
+            import requests as re 
+            import json
+            postdata = {'text':"Hello World", 'label':'Negative', 'model_id':'testing'}
+            result = re.post("http://localhost:5000/feedback/private", data=json.dumps(postdata))
+            print(result.text)
+            # OUTPUT: {'Done'}
+
+        ii) Universal Batch Trainer: Trains both private and global models on a provided JSON Dataset
+            URL: http://<ip>:5000/train/private
+            POST data: {'dataset':data, 'model_id':'testing'}
+            # Dataset is a JSON List of tuples object with each entry being of type ('some statement':0)
+            # 0 for negative, 1 for positive
+            # For Global models, just put model_id = global above 
+            Example Code =>
+
+            import requests as re 
+            import json
+            rawdata = open('./dataset.txt','r').read().split('\n')  # Get all lines of the file in a list, each element is one line 
+            data = [i.split(':') for i in rawdata]
+
+            postdata = {'dataset':data, 'model_id':'testing'}
+            result = re.post("http://localhost:5000/train/private", data=json.dumps(postdata))
+            print(result.text)
+            # OUTPUT: {'Done'}
+
+    3. Utilities (Load/Save/Create):   
+        i)  Create Model: Can create a model and save it physically provided a template model id. 
+            URL: http://<ip>:5000/create/universal
+            POST data: {'original':{'model_id':'abcd', 'model_type':'abcd', 'user':'abcd}, 'new':{'model_id':'abcd, 'user':'abcd}}
+            # This creates a private model from global classifier
+            Example Code =>
+
+            import requests as re 
+            import json
+            postdata = {'original':{'model_id':'global', 'model_type':'global', 'user':'admin}, 'new':{'model_id':'test2', 'user':'admin}}
+            result = re.post("http://localhost:5000/create/universal", data=json.dumps(postdata))
+            print(result.text)
+            # OUTPUT: {'Created'}
+        
+        ii) Load Model: Can load model from disk to memory, Useful for reverting back unwanted changes
+            URL: http://<ip>:5000/load/universal
+            POST data: {'model_id':'abcd', 'model_type':'abcd', 'user':'abcd}
+            Example Code =>
+
+            import requests as re 
+            import json
+            postdata = {'model_id':'newmodel', 'model_type':'private', 'user':'admin}
+            result = re.post("http://localhost:5000/load/universal", data=json.dumps(postdata))
+            print(result.text)
+            # OUTPUT: {'Loaded'}
+
+        iii) Save Model: Can save model from memory to disk, IMPORTANT TO WRITE TRAINED CHANGES Physically!
+            URL: http://<ip>:5000/save/universal
+            POST data: {'model_id':'abcd', 'model_type':'abcd', 'user':'abcd}
+            Example Code =>
+
+            import requests as re 
+            import json
+            postdata = {'model_id':'newmodel', 'model_type':'private', 'user':'admin}
+            result = re.post("http://localhost:5000/save/universal", data=json.dumps(postdata))
+            print(result.text)
+            # OUTPUT: {'Saved'}
