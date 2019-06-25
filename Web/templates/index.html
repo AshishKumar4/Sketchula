@@ -1,10 +1,136 @@
-<html>
-    <body>
-        <form method="POST">
-            Give your Review : <br>
-            <textarea name="review"></textarea>
-            <br>
-            <button type="submit">Submit</button>
-        </form>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Creative one page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700,800|Open+Sans:300,400,700,800&amp;subset=latin-ext"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+        crossorigin="anonymous">
+    
+</head>
+
+<body>
+    <nav class="wrap">
+        <div class="inner_wrap nav_inner_wrap">
+            <div class="logo"><a href="/home"><span>Sketchula</span></a></div>
+            <div class='nav'>
+                <li id="contact"><a href="/login">Login</a></li>
+            </div>
+
+        </div>
+    </nav>
+    <header class="header">
+        <h2 class="headerText ">Sketch your own product design!</h2>
+    </header>
+    <section class="aboutUs inner" data-Toscroll='aboutUs'>
+        <h2 class="tittle">About<span class="tittle"> Us</span></h2>
+        <p class="intro"><span>
+            The Product </span>Sketchula is a tool for the modern day designer-helping you design, visualise and create. </p>
+    </section>
+    </section>
+    <section class="paralax achievements">
+        <div class="achievementsContentWrapper">
+            <div class='symbol S1'><i class="fas fa-palette"></i>
+                <h4>Sketch your Design</h4>
+            </div>
+            <div class='symbol S2'><i class="fas fa-microchip"></i>
+                <h4>Generate your sketch</h4>
+            </div>
+            <div class='symbol S3'><i class="fas fa-cog"></i>
+                <h4>Transfer your style</h4>
+            </div>
+            <div class="numbers">
+            <div class='number N1'>
+                <p>1</p>
+            </div>
+            <div class='number N2'>
+                <p>2</p>
+            </div>
+            <div class='number N3'>
+                <p>3</p>
+            </div>
+        </div>
+
+        </div>
+    </section>
+    <section class="ourServices wrapper " data-Toscroll='service'>
+        <div class="inner serviceInner">
+            <div class="contentWrapper tittleServices">
+                <h2 class="tittle">Steps to final product</h2>
+            </div>
+            <div class="content">
+                <div class="itemBox">
+                    <h3><i class="fas fa-palette"></i>Sketch</h3>
+                    <p>Use our sketchpad to draw out your own design of the object you want.
+                    </p>
+                </div>
+                <div class="itemBox">
+                    <h3><i class="fas fa-microchip"></i>Generate</h3>
+                    <p>Generate a sketch using our cGAN
+                    </p>
+                </div>
+                <div class="itemBox">
+                    <h3><i class="fas fa-cog"></i>Transfer</h3>
+                    <p>Transfer the style of your liking on to the object of your choice.</p>
+                </div>
+            </div>
+            <a href="/login"><div class="button" align="center"><i class="far fa-pencil"></i>Start Building</div></a>
+        </div>
+    </section>
+    <section class="wrapper portfolio" data-Toscroll='portfolio'>
+        <div class="inner">
+            <div class="contentWrapper tittleServices">
+                <h2 class="tittle">Our Samples</h2>
+            </div>
+            <div class="portfolioContent">
+                <div class="portfolioBox photoA">
+                    <a class="link" href=""></a>
+                    <div class="cover">
+                        <h3>Project Name</h3>
+                    </div>
+                </div>
+                <div class="portfolioBox photoB"><a class="link" href="#"></a>
+                    <div class="cover">
+                        <h3>Project Name</h3>
+                    </div>
+                </div>
+                <div class="portfolioBox photoC"><a class="link" href="#"></a>
+                    <div class="cover">
+                        <h3>Project Name</h3>
+                    </div>
+                </div>
+                <div class="portfolioBox photoD"><a class="link" href="#"></a>
+                    <div class="cover">
+                        <h3>Project Name</h3>
+                    </div>
+                </div>
+                <div class="portfolioBox photoE"><a class="link" href="#"></a>
+                    <div class="cover">
+                        <h3>Project Name</h3>
+                    </div>
+                </div>
+                <div class="portfolioBox photoF"><a class="link" href="#"></a>
+                    <div class="cover">
+                        <h3>Project Name</h3>
+                    </div>
+                </div>
+                <div class="portfolioBox photoG"><a class="link" href="#"></a>
+                    <div class="cover">
+                        <h3>Project Name</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </section>
+    <aside class="srollTop"><i class="fas fa-long-arrow-alt-up"></i></aside>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/code.js')}}"></script>
+</body>
+
 </html>

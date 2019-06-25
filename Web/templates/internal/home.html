@@ -2,139 +2,94 @@
 <html>
 
 <head>
-    <title>Smart AI Portal - Dashboard</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login/css/main.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dash2.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+	<title>Sketchula-Your Online Design Master</title>
 
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+	<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+		crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat|Source+Code+Pro:700" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/landing.css')}}">
+	<!--Javascript-->
+
+	<!--Drawing Pad-->
+	<script type="text/javascript" src="{{ url_for('static', filename='js/landing.js')}}">
+	</script>
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.6.95/css/materialdesignicons.css"
+		rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous">
+		</script>
+	<script src="{{ url_for('static', filename='js/jquery.drawr.combined.js')}}"></script>
+
 </head>
 
-<body>
+<body onload="init()">
 
-    <div
-        style="background:url({{ url_for('static', filename='img/back.png') }});z-index:-1;background-size:cover;background-position:center;height:100vh;width:100vw;position:fixed">
-    </div>
-    <div id="grad1">
+	<!--Basic Jumbotron-->
+	<div class="jumbotron">
+		<h1>
+			<center>Sketchula</center>
+		</h1>
+		<h2>
+			<center>Your Online Design Master</center>
+		</h2>
+		<div></div>
+		<p>
+			<center><a class="btn btn-info btn-lg" href="#" role="button">Make my Sketch</a></center>
+		</p>
+	</div>
 
-        <div class="header">
-            <a href="#default" class="logo">SMART</a>
-            <div class="header-right">
-                <a href="/home">DASHBOARD</a>
-                <a href="/terms">TERMS AND CONDITIONS</a>
-                <!--onclick="return openForm();"-->
-                <a href="/question">UPGRADE</a>
-                <a href="/logout">LOGOUT</a>
 
-            </div>
-        </div>
-        <br>
-        <div class="container-main">
-            <div class="container">
 
-            </div>
-            <div class="d-flex justify-content-center">
-                <div class="container-login100">
-                    <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
+	<!--Basic Navbar-->
 
-                        <span class="login100-form-title p-b-55">
-                            HELLO! {{profile_name | safe}}
-                        </span>
-                        <div class="form-popup" id="myForm">
-                            <img class="image" src="{{ url_for('static', filename='img/tc1.png') }}">
-                            <button type="submit" class="btn btn1 nextpage" onclick="Next()">Next</button>
-                            <button type="submit" class="btn btn1 prev" onclick="Previous()">Previous</button><br>
-                            <button type="submit" class="btn cancel" onclick="closeForm()">Close</button>
-                        </div>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+					data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Sketchula</a>
+			</div>
 
-                        <div class="table-responsive">
-                            <table class="table">
-                                <tr>
-                                    <td>Account Level</td>
-                                    <td>-</td>
-                                    <td>{{acc_level | safe}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Total API Calls</td>
-                                    <td>-</td>
-                                    <td>{{api_call_count | safe}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Total API Keys</td>
-                                    <td>-</td>
-                                    <td>{{api_key_count | safe}}</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div id="api-keys-holder">
-                            <span class="txt1">
-                                YOUR API KEYS
-                            </span>
-                            <select name="keys" id="api-keys">
-                            </select>
-                        </div>
-                        <div id="goto-keys">
-                            <textarea id="test-text" rows=8 cols=70 name="text">This is an example statement</textarea>
-                            <br>
-                            <input name="user" value="{{ profile_id | safe }}" hidden/>
-                            <br>Enter one of your API Key:
-                            <br><br><input id="test-key" name="apikey" style="float:left" required/>
-                            <button class="btn btn-form" onclick="inferText('{{ profile_id | safe }}')">Go</button>
-                            <br><br>
-                            <div id="inference">
-                            </div>
-                            <div id="callid" style="height:0" hidden>
-                            </div>
-                            <div id="options">
-                                <div id="feedback" style="visibility: hidden">
-                                    <button style="width:20%" onclick="feedback('{{ profile_id | safe }}', 'wrong')">Wrong inference?</button>
-                                </div>
-                                <div id="saveModel" style="visibility: hidden">
-                                    <button style="width:20%" onclick="saveModel('{{ profile_id | safe }}')">Save Model</button>
-                                </div>
-                                <div id="loadModel" style="visibility: visible">
-                                    <button style="width:20%" onclick="loadModel('{{ profile_id | safe }}')">Reload Model</button>
-                                </div>
-                            </div>
-                        </div>
-                        <script>
-                            loadUserKeys('{{ api_keys | safe }}');
-                        </script>
-                    </div>
-                </div><br>
-                <div id="createModel" class="container text-center styled-button">
-                    <button id="resume" onclick="createModel('{{ profile_id | safe }}');">Create a new model!</button>
-                </div>
-            </div>
-        </div>
-    </div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="#">Pick your product</a></li>
+					<li><a href="#">Upload your sketch</a></li>
+					<li><a href="#">Transfer my Style</a></li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#">My Gallery</a></li>
+					<li><a href="#">Log out</a></li>
+
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
+
+	<div id="sketchpad">
+		<canvas id="sketcharea"></canvas>
+	</div>
+
+	<script type="text/javascript" src="{{ url_for('static', filename='js/sketchpad.js')}}">
+	</script>
+	
+	<button onclick="resetPad()">Reset</button>
+	<input type="file" id="file-picker" style="display:none;">
+
+	<img id="previewPort" src=""/> 
+
 
 </body>
-<script type="text/javascript">
-    function openForm() {
-        document.getElementById("myForm").style.display = "block";
-    }
-
-    function closeForm() {
-        document.getElementById("myForm").style.display = "none";
-    }
-    function Next() {
-        $(".image").attr("src", "{{ url_for('static', filename='dash/img/tc2.png') }}");
-        $(".nextpage").css("display", "none");
-        $(".prev").css("display", "block");
-
-    }
-    function Previous() {
-        $(".image").attr("src", "{{ url_for('static', filename='dash/img/tc1.png') }}");
-        $(".nextpage").css("display", "block");
-        $(".prev").css("display", "none");
-    }
-</script>
 
 </html>

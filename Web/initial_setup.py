@@ -2,7 +2,7 @@ import pymongo
 from werkzeug.security import generate_password_hash, check_password_hash
 
 db = pymongo.MongoClient("mongodb://localhost:27017/")
-df = db['smart']  # Create Database
+df = db['sketchula']  # Create Database
 
 dusers = df['users']     # Create Collections
 

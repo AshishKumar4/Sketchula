@@ -19,7 +19,7 @@ app.config.update(
 SESSION_TYPE = "filesystem"
 app.config.from_object(__name__)
 #Session(app)
-AIengine = InferenceWrapper(NNLM_InferenceEngine())
+AIengine = InferenceWrapper(Default_InferenceEngine())
 
 global db  
 db = Database("mongodb://localhost:27017/")
@@ -60,7 +60,7 @@ def home():
     if "login" in session:
         return redirect("/dashboard")
     else:
-        return redirect("/login")#render_template('/homes.html')
+        return render_template('/index.html')
 
 @app.route("/login", methods=["GET", "POST"])
 @app.route("/login_user", methods=["GET", "POST"])
@@ -103,9 +103,9 @@ def register_user():
             data = dict(request.form)
             status = db.userExists(data)
             if status == 2:
-                return render_template('/register.html', resp = "alert('Username Already Taken!');")
+                return render_template('/signup.html', resp = "alert('Username Already Taken!');")
             elif status == 3:
-                return render_template('/register.html', resp = "alert('Email Already Taken!');")
+                return render_template('/signup.html', resp = "alert('Email Already Taken!');")
             #if data['pass'] != data['cpass']:
             #    return render_template('/register.html', resp = "alert('Passwords do not match!');")
                 
@@ -116,12 +116,12 @@ def register_user():
                 
             if db.createUser(data) == 1:
                return render_template("/registerVerify.html", uid = data['uname'], resp = '')
-            else: return render_template('/register.html', resp = "alert('Username Already Taken');")
+            else: return render_template('/signup.html', resp = "alert('Username Already Taken');")
         except Exception as ex:
             print(ex)
             return render_template("/500.html")
     else:
-        return render_template('/register.html', resp = "")
+        return render_template('/signup.html', resp = "")
 
 
 @app.route("/registerVerify", methods=["GET", "POST"])
@@ -202,7 +202,7 @@ def dashboard():
     if "login" in session: 
         if request.method == "POST": # Redeem Flags
             #pp = request.form[]
-            return render_template('/internal/home.html')
+            return render_template('/profile.html')
         ss = session['login'] 
         info = db.getUserInfo(ss)
         try:
@@ -210,9 +210,9 @@ def dashboard():
         except Exception as e:
             print(e)
         print(info)
-        return render_template('/internal/home.html', acc_level = info['type'], api_call_count = len(info['calls']), 
-                                api_keys = json.dumps({"data":info['keys']}), api_key_count = len(info['keys']), profile_id = info['_id'], 
-                                profile_name = info['name'], profile_email = info['email'])
+        return render_template('/profile.html')#, acc_level = info['type'], api_call_count = len(info['calls']), 
+                                #api_keys = json.dumps({"data":info['keys']}), api_key_count = len(info['keys']), profile_id = info['_id'], 
+                                #profile_name = info['name'], profile_email = info['email'])
     else:
         return redirect("/login_user")
     return render_template('/500.html')
@@ -220,6 +220,18 @@ def dashboard():
 ############################################ RESTFUL APIs, STATEFUL ############################################
 
 # The Restful APIs are defined here
+import numpy as np
+import cv2
+from io import BytesIO, StringIO
+import base64
+import re
+import json
+from PIL import Image
+import pickle
+from skimage.io import imsave
+import os
+
+global contentImg
 
 @app.route("/api/generate", methods=['POST'])
 def api_generate():
@@ -227,9 +239,9 @@ def api_generate():
         return redirect("/login_user")
     try:
         print("non json request")
-        image = request.values['img']
-        model_name = request.values['modelname']
-        model_type = request.values['modeltype']
+        image = request.form['img']
+        model_name = request.form['modelname']
+        model_type = request.form['modeltype']
     except:
         data = request.get_json(force=True)
         print("json request")
@@ -238,39 +250,82 @@ def api_generate():
         model_type = request.values['modeltype']
         #print(data)
     try:
-        user = session['login'] 
-        result = AIengine.generate({"data":image, "type":model_type, "modelname":model_name, "user":user})
-        callID = db.logApiCall({"timestamp":time.time(), "user":user, "type":model_type, "modelname":model_name, "data":image, "result":result})
-        result.append(str(callID))
-        return jsonify(result)#jsonify({"callid":callID, "result":result['text']})
+        image_data = re.sub('^data:image/.+;base64,', '', image)
+        rawimage = Image.open(BytesIO(base64.b64decode(image_data))).convert('RGB')
+        image = pickle.dumps(rawimage).hex()
+        #print(image)
+        session['image'] = image
+        global contentImg
+        contentImg = image
+        if(model_name != 'identity'):
+            # Just save it locally
+            user = session['login'] 
+            result = AIengine.generate({"data":image, "type":model_type, "modelname":model_name, "user":user})
+            print("Got results")
+            rawresult = pickle.loads(bytes.fromhex(result))
+            print(type(result))
+            print(rawresult.shape)
+            callID = db.logApiCall({"timestamp":time.time(), "user":user, "type":model_type, "modelname":model_name, "data":image, "result":result})
+            im = Image.fromarray(rawresult)
+        else:
+            im = rawimage 
+        resultUrl = "static/generated/" + user + "/" + str(callID) + ".png"
+        try:
+            im.save(resultUrl)
+        except:
+            os.system("mkdir " + "static/generated/" + user)
+            im.save(resultUrl)
+        #return send_file(strIO, mimetype='image/png')
+        print("Got till here")
+        return jsonify({"url":resultUrl})#jsonify({"callid":callID, "result":result['text']})
     except Exception as e:
         print(e)
         return e
     
 @app.route("/api/transfer", methods=['POST'])
-def api_generate():
+def api_styleTransfer():
     if "login" not in session: 
         return redirect("/login_user")
     try:
         print("non json request")
-        image = request.values['img']
         style = request.values['style']
         model_name = request.values['modelname']
         model_type = request.values['modeltype']
     except:
         data = request.get_json(force=True)
         print("json request")
-        image = request.values['img']
         style = request.values['style']
         model_name = request.values['modelname']
         model_type = request.values['modeltype']
         #print(data)
     try:
+        #print(style)
+        global contentImg
+        image = contentImg
+        return jsonify({"url":"static/img/test5.png"})
+        #image = session['image']
+        
+        
+        image_data = re.sub('^data:image/.+;base64,', '', style)
+        rawimage = Image.open(BytesIO(base64.b64decode(image_data))).convert('RGB')
+        style = pickle.dumps(rawimage).hex()
+
         user = session['login'] 
-        result = AIengine.generate({"data":image, "style":style, "type":model_type, "modelname":model_name, "user":user})
+        result = AIengine.transfer({"data":image, "style":style, "type":model_type, "modelname":model_name, "user":user})
+        print("Got results")
+        rawresult = pickle.loads(bytes.fromhex(result))
+        print(type(result))
         callID = db.logApiCall({"timestamp":time.time(), "user":user, "type":model_type, "modelname":model_name, "data":image, "style":style, "result":result})
-        result.append(str(callID))
-        return jsonify(result)#jsonify({"callid":callID, "result":result['text']})
+        im = rawresult#Image.fromarray(rawresult)
+        resultUrl = "static/generated/" + user + "/" + str(callID) + ".png"
+        try:
+            im.save(resultUrl)
+        except:
+            os.system("mkdir " + "static/generated/" + user)
+            im.save(resultUrl)
+        #return send_file(strIO, mimetype='image/png')
+
+        return jsonify({"url":resultUrl})#jsonify({"callid":callID, "result":result['text']})
     except Exception as e:
         print(e)
         return e

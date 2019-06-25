@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sketchula-User Profile</title>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Creative one page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sketchpad.css')}}">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700,800|Open+Sans:300,400,700,800&amp;subset=latin-ext"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+        crossorigin="anonymous">
+    
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.6.95/css/materialdesignicons.css"
+    rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous">
+        </script>
+    <script src="{{ url_for('static', filename='js/jquery.drawr.combined.js')}}"></script>
+
+</head>
+<body>
+
+	<nav class="wrap">
+        <div class="inner_wrap nav_inner_wrap">
+            <div class="logo"><a href="/home"><span>Sketchula</span></a></div>
+            
+            <div class='nav'>
+                <li id="contact"><a href="/logout">Sign Out</a></li>
+            </div>
+
+        </div>
+    </nav>
+
+    <div id="vertical-nav">
+		<span class="model-icon"  onclick="chooseModel('shoes')">Shoes</span><br>
+		<span class="model-icon"  onclick="chooseModel('handbags')">Handbags</span><br>
+		<span class="model-icon"  onclick="chooseModel('jackets')">Jackets</span><br>
+		<span class="model-icon"  onclick="chooseModel('custom')">Custom</span><br>
+    </div>
+	<div id="sketchpad">
+		<canvas id="sketcharea"></canvas>
+	</div>
+
+	<script type="text/javascript" src="{{ url_for('static', filename='js/sketchpad.js')}}">
+	</script>
+	
+	<button onclick="resetPad()">Reset</button>
+	<input type="file" id="file-picker" style="display:none;">
+
+    <img id="previewPort" src="static/img/back.jpeg"/> 
+    
+    <div id="style-wrapper">
+        <h3>Upload image for style transfer</h3>
+        <!--<form action="/api/transfer" method="POST" enctype="application/x-www-form-urlencoded">
+        </form>
+        -->
+        <input id="styleImg" type="file" onchange="previewFile()" name="style">
+        <button type="submit" onclick="uploadStyle()">Submit</button>
+    </div>
+    <img id="previewStyle" src=""/>
+</body>
+</html>

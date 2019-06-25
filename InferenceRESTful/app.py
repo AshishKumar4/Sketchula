@@ -4,18 +4,19 @@ from flask_restful import *
 from json import dumps
 import subprocess
 
-from models import *
+from Engines import *
 
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle 
+import numpy as np
 
 app = Flask(__name__)
 api = Api(app)
 
 SketchModelMap = dict()
 
-StyleTransfer = dict()
+StyleTransferModel = StyleTransfer_Engine()
 
 userModelRoot = lambda obj: './models/'# + obj['user']
 
@@ -26,7 +27,7 @@ class Generate(Resource):
         # Get Data (Image/Vector), type (private/vanilla), 'user' - username, modelname
         obj = request.get_json(force=True)
         print(type(obj['data']))
-        model_id = 'vanilla' if obj['type'] == 'vanilla' else hash(obj['user'] + obj['modelname'])
+        model_id = hash(obj['user'] + obj['modelname'])
         if model_id not in SketchModelMap:
             print("Got here")
             model_location = getModelLocation[obj['type']](obj['user'])
@@ -36,7 +37,7 @@ class Generate(Resource):
             SketchModelMap[model_id] = model
         print("Unpacking Image")
         image = pickle.loads(bytes.fromhex(obj['data']))
-        print(type(image), image.shape)
+        print(type(image))
         print('Feeding in Image')
         results, status = SketchModelMap[model_id].run(image, transformed=obj['transformed'])
         print(type(results))
@@ -46,18 +47,16 @@ class StyleTransfer(Resource):
     def post(self):
         # Get Data (Image/Vector), type (private/vanilla), 'user' - username, modelname
         obj = request.get_json(force=True)
+        print("Unpacking Image")
+        image = pickle.loads(bytes.fromhex(obj['data']))
+        style = pickle.loads(bytes.fromhex(obj['style']))
+        print(type(image))
+        print(type(style))
         #print(obj)
-        model_id = hash(obj['user'] + obj['modelname'])
-        if model_id not in SketchModelMap:
-            model_location = getModelLocation[obj['type']](obj['user'])
-            print(model_location)
-            model = MagicBox()
-            model.load_networks(save_dir=model_location, name=obj['modelname'])
-            SketchModelMap[model_id] = model
-        image = pickle.loads(obj['data'])
-        results, status = SketchModelMap[model_id].run(image)
+        results, status = StyleTransferModel.run(image, style)
         print(type(results))
-        return jsonify(pickle.dumps(results))
+        results.save(str(np.random.randint(1000000)) + ".png", "png")
+        return jsonify(pickle.dumps(results).hex())
     
 class Train(Resource):
     def post(self):
@@ -86,7 +85,7 @@ class createModel(Resource):
         return jsonify("Created")
 
 api.add_resource(Generate, '/generate')
-api.add_resource(StyleTransfer, '/styletransfer')
+api.add_resource(StyleTransfer, '/transfer')
 
 api.add_resource(Train, '/train')
 
